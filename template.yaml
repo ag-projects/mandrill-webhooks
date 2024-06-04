@@ -36,6 +36,7 @@ Resources:
       - WebhooksFunction
     Properties:
       Name: !Sub "mandrill-webhooks-api-${Stage}"
+      Description: !Sub "Mandrill Webhooks API for ${Stage}"
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
 
@@ -43,6 +44,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mandrill-webhooks-function-${Stage}"
+      Description: !Sub "Mandrill Webhooks Function for ${Stage}"
       CodeUri: MandrillWebhooksFunction
       Handler: com.quickfee.lambda.WebhooksHandler::handleRequest
 
