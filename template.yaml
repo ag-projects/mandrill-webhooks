@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  mandrill-webhooks
+
+  Sample SAM Template for mandrill-webhooks
+
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 1024
+    Runtime: java21
+    Architectures:
+      - x86_64
+
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  MandrillWebhooksHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: MandrillWebhooksFunction
+      Handler: com.quickfee.lambda.WebhooksHandler::handleRequest
+
+      Events:
+        WebhookPostEvent:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: post
+
+        WebhookHeadEvent:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: head
+
+  MandrillWebhookHandlerFunctionUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !Ref MandrillWebhooksHandlerFunction
+      AuthType: NONE
+
+  PermissionForURLInvoke:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunctionUrl'
+      FunctionName: !Ref MandrillWebhooksHandlerFunction
+      FunctionUrlAuthType: NONE
+      Principal: '*'
+
+  ApplicationResourceGroup:
+    Type: AWS::ResourceGroups::Group
+    Properties:
+      Name:
+        Fn::Sub: ApplicationInsights-SAM-${AWS::StackName}
+      ResourceQuery:
+        Type: CLOUDFORMATION_STACK_1_0
+  ApplicationInsightsMonitoring:
+    Type: AWS::ApplicationInsights::Application
+    Properties:
+      ResourceGroupName:
+        Ref: ApplicationResourceGroup
+      AutoConfigurationEnabled: 'true'
+Outputs:
+
+  MandrillWebhooksApi:
+    Description: API Gateway endpoint URL for prod Mandrill webhooks function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/webhook"
