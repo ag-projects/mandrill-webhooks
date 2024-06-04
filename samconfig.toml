@@ -21,6 +21,7 @@ stack_name = "dev-stack"
 s3_prefix = "dev-stack"
 region = "us-west-1"
 image_repositories = []
+parameter_overrides = "Stage=\"test\""
 
 [default.package.parameters]
 resolve_s3 = true

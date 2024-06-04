@@ -5,6 +5,16 @@ Description: >
 
   Sample SAM Template for mandrill-webhooks
 
+Parameters:
+  Stage:
+    Default: test
+    Type: String
+    Description: Stage name to deploy resource
+    AllowedValues:
+      - dev
+      - test
+      - prod
+
 Globals:
   Function:
     Timeout: 20
@@ -12,10 +22,21 @@ Globals:
     Runtime: java21
     Architectures:
       - x86_64
-
+    Environment:
+      Variables:
+        STAGE: !Ref Stage
     LoggingConfig:
       LogFormat: JSON
+
 Resources:
+
+  WebhooksApi:
+    Type: AWS::Serverless::Api
+    DependsOn:
+      - MandrillWebhooksHandlerFunction
+    Properties:
+      StageName: !Ref Stage
+
   MandrillWebhooksHandlerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -28,12 +49,16 @@ Resources:
           Properties:
             Path: /webhook
             Method: post
+            RestApiId:
+              Ref: WebhooksApi
 
         WebhookHeadEvent:
           Type: Api
           Properties:
             Path: /webhook
             Method: head
+            RestApiId:
+              Ref: WebhooksApi
 
   MandrillWebhookHandlerFunctionUrl:
     Type: AWS::Lambda::Url
@@ -62,8 +87,8 @@ Resources:
       ResourceGroupName:
         Ref: ApplicationResourceGroup
       AutoConfigurationEnabled: 'true'
-Outputs:
-
-  MandrillWebhooksApi:
-    Description: API Gateway endpoint URL for prod Mandrill webhooks function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/webhook"
+#Outputs:
+#
+#  MandrillWebhooksApi:
+#    Description: API Gateway endpoint URL for prod Mandrill webhooks function
+#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/{Stage}/webhook"
