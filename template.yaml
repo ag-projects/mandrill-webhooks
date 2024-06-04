@@ -35,6 +35,7 @@ Resources:
     DependsOn:
       - WebhooksFunction
     Properties:
+      Name: !Sub "mandrill-webhooks-api-${Stage}"
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
 
