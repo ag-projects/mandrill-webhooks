@@ -33,7 +33,7 @@ Resources:
   WebhooksApi:
     Type: AWS::Serverless::Api
     DependsOn:
-      - MandrillWebhooksHandlerFunction
+      - WebhooksFunction
     Properties:
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
@@ -52,7 +52,7 @@ Resources:
         BurstLimit: 500
         RateLimit: 1000
 
-  MandrillWebhooksHandlerFunction:
+  WebhooksFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: MandrillWebhooksFunction
@@ -75,17 +75,17 @@ Resources:
             RestApiId:
               Ref: WebhooksApi
 
-  MandrillWebhookHandlerFunctionUrl:
+  WebhooksFunctionUrl:
     Type: AWS::Lambda::Url
     Properties:
-      TargetFunctionArn: !Ref MandrillWebhooksHandlerFunction
+      TargetFunctionArn: !Ref WebhooksFunction
       AuthType: NONE
 
   PermissionForURLInvoke:
     Type: 'AWS::Lambda::Permission'
     Properties:
       Action: 'lambda:InvokeFunctionUrl'
-      FunctionName: !Ref MandrillWebhooksHandlerFunction
+      FunctionName: !Ref WebhooksFunction
       FunctionUrlAuthType: NONE
       Principal: '*'
 
