@@ -38,6 +38,20 @@ Resources:
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
 
+  WebhooksUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      ApiStages:
+        - ApiId: !Ref WebhooksApi
+          Stage: !Ref Stage
+      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
+      Quota:
+        Limit: 1000000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 1000
+
   MandrillWebhooksHandlerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -91,4 +105,4 @@ Resources:
 Outputs:
   WebhooksApiUrl:
     Description: API Gateway endpoint URL for prod Mandrill webhooks function
-    Value: !Sub "https://${WebhooksApi}.execute-api.${AWS::Region}.amazonaws.com/{Stage}/webhook"
+    Value: !Sub "https://${WebhooksApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/webhook"

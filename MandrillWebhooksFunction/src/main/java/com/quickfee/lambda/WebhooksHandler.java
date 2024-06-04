@@ -25,6 +25,7 @@ public class WebhooksHandler implements RequestHandler<APIGatewayProxyRequestEve
         response.withStatusCode(200);
         response.withBody(requestBody);
         response.withHeaders(headers);
+
         return response;
     }
 
