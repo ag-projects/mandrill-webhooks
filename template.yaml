@@ -38,23 +38,10 @@ Resources:
       StageName: !Ref Stage
       EndpointConfiguration: REGIONAL
 
-  WebhooksUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      ApiStages:
-        - ApiId: !Ref WebhooksApi
-          Stage: !Ref Stage
-      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
-      Quota:
-        Limit: 1000000
-        Period: MONTH
-      Throttle:
-        BurstLimit: 500
-        RateLimit: 1000
-
   WebhooksFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mandrill-webhooks-function-${Stage}"
       CodeUri: MandrillWebhooksFunction
       Handler: com.quickfee.lambda.WebhooksHandler::handleRequest
 
@@ -88,6 +75,20 @@ Resources:
       FunctionName: !Ref WebhooksFunction
       FunctionUrlAuthType: NONE
       Principal: '*'
+
+  WebhooksUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      ApiStages:
+        - ApiId: !Ref WebhooksApi
+          Stage: !Ref Stage
+      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
+      Quota:
+        Limit: 1000000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 1000
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
