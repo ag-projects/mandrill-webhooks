@@ -36,6 +36,7 @@ Resources:
       - MandrillWebhooksHandlerFunction
     Properties:
       StageName: !Ref Stage
+      EndpointConfiguration: REGIONAL
 
   MandrillWebhooksHandlerFunction:
     Type: AWS::Serverless::Function
@@ -87,8 +88,7 @@ Resources:
       ResourceGroupName:
         Ref: ApplicationResourceGroup
       AutoConfigurationEnabled: 'true'
-#Outputs:
-#
-#  MandrillWebhooksApi:
-#    Description: API Gateway endpoint URL for prod Mandrill webhooks function
-#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/{Stage}/webhook"
+Outputs:
+  WebhooksApiUrl:
+    Description: API Gateway endpoint URL for prod Mandrill webhooks function
+    Value: !Sub "https://${WebhooksApi}.execute-api.${AWS::Region}.amazonaws.com/{Stage}/webhook"
