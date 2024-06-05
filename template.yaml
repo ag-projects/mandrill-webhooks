@@ -47,6 +47,14 @@ Resources:
       Description: !Sub "Mandrill Webhooks Function for ${Stage}"
       CodeUri: MandrillWebhooksFunction
       Handler: com.quickfee.lambda.WebhooksHandler::handleRequest
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: '*'
 
       Events:
         WebhookPostEvent:
