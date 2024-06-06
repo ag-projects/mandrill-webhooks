@@ -94,6 +94,12 @@ Resources:
       ApiStages:
         - ApiId: !Ref WebhooksApi
           Stage: !Ref WebhooksStage
+      Quota:
+        Limit: 1000000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 1000
 
   WebhooksStage:
     Type: AWS::ApiGateway::Stage

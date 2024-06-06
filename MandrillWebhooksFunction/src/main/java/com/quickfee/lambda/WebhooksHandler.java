@@ -14,6 +14,7 @@ import java.util.Map;
  * Mandrill Webhooks Handler for requests to Lambda function.
  */
 public class WebhooksHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         String requestBody = URLDecoder.decode(input.getBody());
         LambdaLogger logger = context.getLogger();
