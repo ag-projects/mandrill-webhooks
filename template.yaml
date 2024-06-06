@@ -90,16 +90,23 @@ Resources:
   WebhooksUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     Properties:
+      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
       ApiStages:
         - ApiId: !Ref WebhooksApi
-          Stage: !Ref Stage
-      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
-      Quota:
-        Limit: 1000000
-        Period: MONTH
-      Throttle:
-        BurstLimit: 500
-        RateLimit: 1000
+          Stage: !Ref WebhooksStage
+
+  WebhooksStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId: !Ref WebhooksApi
+      StageName: !Sub "mandrill-webhooks-stage-${Stage}"
+      DeploymentId: !Ref WebhooksDeployment
+
+  WebhooksDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref WebhooksApi
+      StageName: !Ref Stage
 
   WebhooksApiKey:
     Type: AWS::ApiGateway::ApiKey
