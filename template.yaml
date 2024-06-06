@@ -32,6 +32,7 @@ Resources:
     DependsOn:
       - WebhooksFunction
     Properties:
+      OpenApiVersion: 3.0.1
       Name: !Sub "mandrill-webhooks-api-${Stage}"
       Description: !Sub "Mandrill Webhooks API for ${Stage}"
       StageName: !Ref Stage
