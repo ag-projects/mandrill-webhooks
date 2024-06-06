@@ -22,9 +22,6 @@ Globals:
     Runtime: java21
     Architectures:
       - x86_64
-    Environment:
-      Variables:
-        STAGE: !Ref Stage
     LoggingConfig:
       LogFormat: JSON
 
@@ -112,7 +109,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId: !Ref WebhooksApi
-      StageName: !Ref Stage
+      StageName: !Sub "mandrill-webhooks-deployment-${Stage}"
 
   WebhooksApiKey:
     Type: AWS::ApiGateway::ApiKey
