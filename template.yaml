@@ -73,13 +73,6 @@ Resources:
             Method: head
             RestApiId:
               Ref: WebhooksApi
-#
-#  WebhooksFunctionUrl:
-#    Type: AWS::Lambda::Url
-#    Properties:
-#      TargetFunctionArn: !Ref WebhooksFunction
-#      AuthType: NONE
-
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
