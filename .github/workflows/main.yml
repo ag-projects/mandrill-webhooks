@@ -52,4 +52,14 @@ jobs:
           mvn package
           cd target
           cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+
+      - name: Deploy SAM Application
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+            sam deploy --template-file packaged.yaml --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev
+          elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
+            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-test --capabilities CAPABILITY_IAM
+          elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
+            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-prod --capabilities CAPABILITY_IAM
+          fi    
           
