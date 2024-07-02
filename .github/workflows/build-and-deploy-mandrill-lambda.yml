@@ -46,16 +46,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
-      - name: Build SAM Application
+      - name: Package SAM Application
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn package
-          cp target/MandrillWebhooksFunction-1.0-SNAPSHOT.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+          cd target
+          cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+
+      - name: Set environment variable to disable telemetry
+        run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV
 
       - name: Deploy SAM Application
         run: |
+          cd ${GITHUB_WORKSPACE}
+          ls -a
           if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-dev --capabilities CAPABILITY_IAM
+            sam deploy --template-file ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev
           elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
             sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-test --capabilities CAPABILITY_IAM
           elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
