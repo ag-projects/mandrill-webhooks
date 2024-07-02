@@ -50,8 +50,6 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn package
-          ls -a
           cd target
-          ls -a
-          # cp target/MandrillWebhooksFunction-1.0-shaded.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+          cp target/MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
           
