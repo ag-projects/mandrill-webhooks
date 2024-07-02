@@ -46,11 +46,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
-      - name: Build SAM Application
+      - name: Package SAM Application
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn package
-          cp target/MandrillWebhooksFunction-1.0-SNAPSHOT.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+          cp target/MandrillWebhooksFunction-1.0-shaded.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+          
 
       - name: List current directory
         run: ls -a
