@@ -88,46 +88,6 @@ Resources:
 #      FunctionUrlAuthType: NONE
 #      Principal: '*'
 
-#  WebhooksUsagePlan:
-#    Type: AWS::ApiGateway::UsagePlan
-#    Properties:
-#      UsagePlanName: !Sub "mandrill-webhooks-usage-plan-${Stage}"
-#      ApiStages:
-#        - ApiId: !Ref WebhooksApi
-#          Stage: !Ref WebhooksStage
-#      Quota:
-#        Limit: 1000000
-#        Period: MONTH
-#      Throttle:
-#        BurstLimit: 500
-#        RateLimit: 1000
-#
-#  WebhooksStage:
-#    Type: AWS::ApiGateway::Stage
-#    Properties:
-#      RestApiId: !Ref WebhooksApi
-#      StageName: !Sub "mandrill-webhooks-stage-${Stage}"
-#      DeploymentId: !Ref WebhooksDeployment
-#
-#  WebhooksDeployment:
-#    Type: AWS::ApiGateway::Deployment
-#    Properties:
-#      RestApiId: !Ref WebhooksApi
-#      StageName: !Sub "mandrill-webhooks-deployment-${Stage}"
-
-#  WebhooksApiKey:
-#    Type: AWS::ApiGateway::ApiKey
-#    Properties:
-#      GenerateDistinctId: true
-#      Name: !Sub "mandrill-webhooks-api-key-${Stage}"
-#
-#  WebhooksUsagePlanKey:
-#    Type: AWS::ApiGateway::UsagePlanKey
-#    Properties:
-#      KeyId: !Ref WebhooksApiKey
-#      KeyType: API_KEY
-#      UsagePlanId: !Ref WebhooksUsagePlan
-
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
     Properties:
