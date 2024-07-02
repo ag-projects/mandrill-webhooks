@@ -54,7 +54,7 @@ jobs:
           cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
 
       - name: Set environment variable to disable telemetry
-        run: echo "SAM_CLI_TELEMETRY=0" >> $GITHUB_ENV    
+        run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV    
 
       - name: Deploy SAM Application
         run: |
