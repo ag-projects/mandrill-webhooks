@@ -1,4 +1,4 @@
-name: Deploy Webhooks Lambda
+name: Deploy Webhooks Lambda 2
 'on':
   workflow_dispatch:
     inputs:
