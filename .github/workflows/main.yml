@@ -51,5 +51,5 @@ jobs:
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn package
           cd target
-          cp target/MandrillWebhooksFunction-1.0.jar /MandrillWebhooksFunction/packaged.yaml
+          cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
           
