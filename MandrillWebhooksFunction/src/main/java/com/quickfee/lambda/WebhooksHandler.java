@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class WebhooksHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         String requestBody = URLDecoder.decode(input.getBody());
         LambdaLogger logger = context.getLogger();
@@ -27,6 +26,9 @@ public class WebhooksHandler implements RequestHandler<APIGatewayProxyRequestEve
         response.withStatusCode(200);
         response.withBody(requestBody);
         response.withHeaders(headers);
+
+
+
 
         return response;
     }
