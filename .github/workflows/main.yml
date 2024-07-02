@@ -1,61 +1,55 @@
-name: Deploy Webhooks Lambda 2
-
-on:
+name: Deploy Webhooks Lambda
+'on':
   workflow_dispatch:
     inputs:
       environment:
         description: 'Environment:'
         required: true
-        default: 'dev'
+        default: dev
         type: choice
         options:
           - dev
           - test
           - prod
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'oracle'
-
+          distribution: oracle
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
-
+          key: '${{ runner.os }}-maven-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: '${{ runner.os }}-maven'
       - name: Build with Maven
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn clean install
-
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           aws-region: us-west-1
-
       - name: Package SAM Application
-        run: |
+        run: >
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
+
           mvn package
+
           cd target
-          cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
 
+          cp MandrillWebhooksFunction-1.0.jar
+          ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
       - name: Set environment variable to disable telemetry
-        run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV    
-
+        run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV
       - name: Deploy SAM Application
         run: |
           cd ${GITHUB_WORKSPACE}
