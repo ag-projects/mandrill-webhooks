@@ -52,10 +52,10 @@ jobs:
           mvn package
           cd target
           ls -a
-          # cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yaml
+          cp MandrillWebhooksFunction-1.0.jar ${GITHUB_WORKSPACE}/MandrillWebhooksFunction/packaged.yml
 
-      # - name: Set environment variable to disable telemetry
-      #   run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV
+      - name: Set environment variable to disable telemetry
+        run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV
 
       # - name: Deploy SAM Application
       #   run: |
