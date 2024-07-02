@@ -80,13 +80,6 @@ Resources:
 #      TargetFunctionArn: !Ref WebhooksFunction
 #      AuthType: NONE
 
-#  PermissionForURLInvoke:
-#    Type: 'AWS::Lambda::Permission'
-#    Properties:
-#      Action: 'lambda:InvokeFunctionUrl'
-#      FunctionName: !Ref WebhooksFunction
-#      FunctionUrlAuthType: NONE
-#      Principal: '*'
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
