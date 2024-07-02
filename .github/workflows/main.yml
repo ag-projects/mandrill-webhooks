@@ -57,11 +57,11 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           ls -a
-          # if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-          #   sam deploy --template-file packaged.yaml --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev
-          # elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
-          #   sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-test --capabilities CAPABILITY_IAM
-          # elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
-          #   sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-prod --capabilities CAPABILITY_IAM
-          # fi    
+          if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+            sam deploy --template-file packaged.yaml --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev
+          elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
+            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-test --capabilities CAPABILITY_IAM
+          elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
+            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-prod --capabilities CAPABILITY_IAM
+          fi    
           
