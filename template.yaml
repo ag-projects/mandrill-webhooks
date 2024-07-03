@@ -45,6 +45,8 @@ Resources:
       Description: !Sub "Mandrill Webhooks Function for ${Stage}"
       CodeUri: MandrillWebhooksFunction
       Handler: com.quickfee.lambda.WebhooksHandler::handleRequest
+      Layers:
+        - !Ref PostgresqlConnectionLayer
       Policies:
         - Statement:
             - Effect: Allow
@@ -73,6 +75,17 @@ Resources:
             Method: head
             RestApiId:
               Ref: WebhooksApi
+
+  PostgresqlConnectionLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: A layer for Java Postgresql Connection dependencies
+      LayerName: postgresql-connection-layer
+      ContentUri: ./postgresql-connection-layer/layer
+      CompatibleRuntimes:
+        - java21
+      CompatibleArchitectures:
+        - x86_64
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
