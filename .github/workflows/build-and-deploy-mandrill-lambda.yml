@@ -1,4 +1,4 @@
-name: Deploy Webhooks Lambda 2
+name: Deploy Mandrill Webhooks Lambda
 
 on:
   workflow_dispatch:
