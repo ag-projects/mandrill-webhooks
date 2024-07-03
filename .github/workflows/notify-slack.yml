@@ -8,6 +8,9 @@ inputs:
   failure-channel:
     description: 'Slack channel to notify on failure'
     required: true
+  project-name:
+    description: 'Name of the project for which notifications are sent'
+    required: true
 
 runs:
   using: 'composite'
@@ -17,7 +20,7 @@ runs:
       uses: voxmedia/github-action-slack-notify-build@v2
       with:
         channel: ${{ inputs.success-channel }}
-        status: 'Mandrill Webhooks lambda SUCCESS'
+        status: '${{ inputs.project-name }} SUCCESS'
         color: good
 
     - name: Notify Slack on Failure
@@ -25,5 +28,5 @@ runs:
       uses: voxmedia/github-action-slack-notify-build@v2
       with:
         channel: ${{ inputs.failure-channel }}
-        status: 'Mandrill Webhooks lambda FAILED'
+        status: '${{ inputs.project-name }} FAILED'
         color: danger

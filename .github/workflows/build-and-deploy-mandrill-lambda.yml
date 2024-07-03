@@ -73,14 +73,16 @@ jobs:
             sam deploy --stack-name mandrill-webhooks-prod --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod --no-confirm-changeset
           fi
 
-      - name: Notify Slack
+      - name: Notify Slack for Non Prod Deployment
         uses: ./.github/actions/notify-slack
         with:
           success-channel: non_prod_deployment
           failure-channel: non_prod_deployment
+          project-name: 'Mandrill Webhooks Lambda'
 
-      - name: Notify Slack
+      - name: Notify Slack for Release Deployment
         uses: ./.github/actions/notify-slack
         with:
           success-channel: release
           failure-channel: release
+          project-name: 'Mandrill Webhooks Lambda'
