@@ -59,8 +59,8 @@ jobs:
 
       - name: Deploy SAM Application
         run: |
-          cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
-          ls -a
+          # cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
+          # ls -a
           if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
              sam deploy --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev
           elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
