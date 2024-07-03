@@ -64,7 +64,7 @@ jobs:
           if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
              sam deploy --stack-name mandrill-webhooks-dev --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev --no-confirm-changeset
           elif [ "${{ github.event.inputs.environment }}" == "test" ]; then
-            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-test --capabilities CAPABILITY_IAM
+            sam deploy --stack-name mandrill-webhooks-test --capabilities CAPABILITY_IAM --parameter-overrides Stage=test --no-confirm-changeset
           elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
-            sam deploy --template-file packaged.yaml --stack-name my-lambda-stack-prod --capabilities CAPABILITY_IAM
+            sam deploy --stack-name mandrill-webhooks-prod --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod --no-confirm-changeset
           fi
