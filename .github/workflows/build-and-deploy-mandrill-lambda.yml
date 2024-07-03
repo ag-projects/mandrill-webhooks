@@ -27,13 +27,6 @@ jobs:
           java-version: '21'
           distribution: 'oracle'
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
-
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -41,17 +34,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
-      - name: Build postgresql-connection-layer with Maven
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Build postgresql-connection-layer module with Maven
         run: |
           cd ${GITHUB_WORKSPACE}/postgresql-connection-layer
           mvn clean install
 
-      - name: Build mandrill-webhooks app with Maven
+      - name: Build mandrill-webhooks Lambda Function with Maven
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn clean install
 
-      - name: Package Mandrill Webhooks SAM Application
+      - name: Package mandrill-webhooks Lambda Function
         run: |
           cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           mvn package
@@ -61,7 +61,7 @@ jobs:
       - name: Set environment variable to disable telemetry
         run: echo 'SAM_CLI_TELEMETRY=0' >> $GITHUB_ENV
 
-      - name: Deploy SAM Application
+      - name: Deploy mandrill-webhooks Lambda Function
         run: |
           # cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
           # ls -a
