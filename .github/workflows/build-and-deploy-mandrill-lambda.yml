@@ -72,3 +72,15 @@ jobs:
           elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
             sam deploy --stack-name mandrill-webhooks-prod --capabilities CAPABILITY_IAM --parameter-overrides Stage=prod --no-confirm-changeset
           fi
+
+      - name: Notify Slack
+        uses: ./.github/actions/notify-slack
+        with:
+          success-channel: non_prod_deployment
+          failure-channel: non_prod_deployment
+
+      - name: Notify Slack
+        uses: ./.github/actions/notify-slack
+        with:
+          success-channel: release
+          failure-channel: release

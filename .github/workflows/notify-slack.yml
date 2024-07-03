@@ -1,0 +1,29 @@
+name: 'Notify Slack'
+description: 'Sends a notification to Slack based on the job status'
+
+inputs:
+  success-channel:
+    description: 'Slack channel to notify on success'
+    required: true
+  failure-channel:
+    description: 'Slack channel to notify on failure'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Notify Slack on Success
+      if: ${{ success() }}
+      uses: voxmedia/github-action-slack-notify-build@v2
+      with:
+        channel: ${{ inputs.success-channel }}
+        status: 'Mandrill Webhooks lambda SUCCESS'
+        color: good
+
+    - name: Notify Slack on Failure
+      if: ${{ failure() }}
+      uses: voxmedia/github-action-slack-notify-build@v2
+      with:
+        channel: ${{ inputs.failure-channel }}
+        status: 'Mandrill Webhooks lambda FAILED'
+        color: danger
