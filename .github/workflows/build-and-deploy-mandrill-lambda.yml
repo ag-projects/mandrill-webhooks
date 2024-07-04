@@ -63,7 +63,7 @@ jobs:
 
       - name: Deploy mandrill-webhooks Lambda Function
         run: |
-          cd ${GITHUB_WORKSPACE}/MandrillWebhooksFunction
+          cd ${GITHUB_WORKSPACE}
           ls -a
           sam build
           if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
